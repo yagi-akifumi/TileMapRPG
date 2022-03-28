@@ -51,3 +51,6 @@ TagManager:
   - name: Chara
     uniqueID: 3662303165
     locked: 0
+  - name: Player
+    uniqueID: 830356195
+    locked: 0

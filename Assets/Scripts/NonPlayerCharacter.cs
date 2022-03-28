@@ -7,11 +7,27 @@ public class NonPlayerCharacter : MonoBehaviour
     [Header("会話イベント判定用")]
     public bool isTalking;         // true の場合は会話イベント中であるように扱う
 
-    private DialogController dialogController;　　　// DialogController スクリプトの情報を代入するための変数
+    private DialogController dialogController;　　　　// DialogController スクリプトの情報を代入するための変数
 
     private Vector3 defaultPos;
 
     private Vector3 offsetPos;
+
+
+    ////*  ここから変数を追加  *////
+
+
+    private EventData.EventType eventType = EventData.EventType.Talk;　　　// NPC とのイベントは会話イベントとして設定
+
+    [SerializeField, Header("NPC 会話イベントの通し番号")]
+    private int npcTalkEventNo;　　　　　　　　　　　　　　　　　　　　　　// この番号と上記の EventType を使って、スクリプタブル・オブジェクト内から会話イベントのデータを取得します
+
+    [SerializeField, Header("NPC 会話イベントのデータ")]
+    private EventData eventData;
+
+
+    ////*  ここまで  *////
+
 
     void Start()
     {
@@ -19,7 +35,20 @@ public class NonPlayerCharacter : MonoBehaviour
         dialogController = GetComponentInChildren<DialogController>();
 
         defaultPos = dialogController.transform.position;
-        offsetPos = new Vector3(defaultPos.x, defaultPos.y - 5.0f, defaultPos.z);
+
+        offsetPos = new Vector3(dialogController.transform.position.x, dialogController.transform.position.y - 5.0f, dialogController.transform.position.z);
+
+
+        ////*  ここから処理を追加  *////
+
+
+        // DataBaseManager に登録してあるスクリプタブル・オブジェクトを検索し、指定した通し番号の EventData を NPC 用の EventData として取得して代入
+        eventData = DataBaseManager.instance.GetEventDataFromNPCEvent(npcTalkEventNo);
+
+
+        ////*  ここまで  *////
+
+
     }
 
     /// <summary>
@@ -32,7 +61,6 @@ public class NonPlayerCharacter : MonoBehaviour
         isTalking = true;
 
         // プレイヤーの位置を確認してウインドウを出す位置を決定する
-
         if (playerPos.y < transform.position.y)
         {
             dialogController.transform.position = offsetPos;
@@ -42,11 +70,16 @@ public class NonPlayerCharacter : MonoBehaviour
             dialogController.transform.position = defaultPos;
         }
 
-       
+
+        ////*  ここから処理を修正  *////
+
 
         // 会話イベントのウインドウを表示する
-        dialogController.DisplayDialog();
-        //Debug.Log("会話ウインドウを開く");
+        dialogController.DisplayDialog(eventData);    //  <=  引数を追加します
+
+
+        ////*  ここまで  *////
+
 
     }
 
@@ -60,8 +93,6 @@ public class NonPlayerCharacter : MonoBehaviour
         isTalking = false;
 
         // 会話イベントのウインドウを閉じる
-
         dialogController.HideDialog();
-        //Debug.Log("会話ウインドウを閉じる");
     }
 }
