@@ -43,7 +43,7 @@ public class NonPlayerCharacter : MonoBehaviour
 
 
         // DataBaseManager に登録してあるスクリプタブル・オブジェクトを検索し、指定した通し番号の EventData を NPC 用の EventData として取得して代入
-        eventData = DataBaseManager.instance.GetEventDataFromNPCEvent(npcTalkEventNo);
+        eventData = DataBaseManager.instance.GetEventDataFromNPCEvent(eventType, npcTalkEventNo);
 
 
         ////*  ここまで  *////

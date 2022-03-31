@@ -26,7 +26,7 @@ public class EncountManager : MonoBehaviour
             return;
         }
 
-        int encountRate = Random.Range(0, GameData.instance.randomEncountRate);
+        int encountRate = Random.Range(10, GameData.instance.randomEncountRate);
 
         if (encountRate == 0)
         {
@@ -34,7 +34,9 @@ public class EncountManager : MonoBehaviour
 
             GameData.instance.isEncouting = true;
 
-            // TODO プレイヤーキャラの位置と方向の情報を保存
+            // プレイヤーキャラの位置と方向の情報を保存
+            GameData.instance.SetEncountPlayerPosAndDirection(playerController.transform.position, playerController.GetLookDirection());
+
 
 
             // Battle シーンへ遷移
