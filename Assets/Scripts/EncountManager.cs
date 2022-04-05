@@ -26,7 +26,7 @@ public class EncountManager : MonoBehaviour
             return;
         }
 
-        int encountRate = Random.Range(10, GameData.instance.randomEncountRate);
+        int encountRate = Random.Range(0, GameData.instance.randomEncountRate);
 
         if (encountRate == 0)
         {
