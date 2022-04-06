@@ -32,20 +32,28 @@ public class GameData : MonoBehaviour
         /// <param name="name">アイテムの名前</param>
         /// <param name="value">アイテムの所持数</param>
         /// <param name="num">アイテムを所持した際の通し番号</param>
-
         public ItemInventryData(ItemName name, int value, int num)
         {
             itemName = name;
             count = value;
             number = num;
-
-
         }
     }
 
-
     [Header("所持アイテムのリスト")]
     public List<ItemInventryData> itemInventryDatasList = new List<ItemInventryData>();
+
+    [Header("獲得済の探索イベントの番号")]
+    public List<int> getSearchEventNumsList = new List<int>();
+
+
+    ////*  ここから処理を追加  *////
+
+
+    private const string getSearchEventNumKey = "getSearchEventNumkey_";
+
+
+    ////*  ここまで  *////
 
 
     void Awake()
@@ -117,28 +125,16 @@ public class GameData : MonoBehaviour
         return itemInventryDatasList[no];
     }
 
-
-    ////*  ここからメソッドを２つ追加  *////
-
-
     /// <summary>
     /// 所持アイテムのセーブ
     /// </summary>
     public void SaveItemInventryDatas()
     {
-
-        // 所持しているアイテムの数だけ処理を行う
         for (int i = 0; i < itemInventryDatasList.Count; i++)
         {
-
-            // 所持しているアイテムの情報を１つの文字列としてセーブするための準備を行う
             PlayerPrefs.SetString(itemInventryDatasList[i].itemName.ToString(), itemInventryDatasList[i].itemName.ToString() + "," + itemInventryDatasList[i].count.ToString() + "," + i.ToString());
-
-            Debug.Log("セーブのキー : " + itemInventryDatasList[i].itemName.ToString());
-            Debug.Log("セーブ内容 : " + itemInventryDatasList[i].itemName.ToString() + "," + itemInventryDatasList[i].count.ToString() + "," + i.ToString());
         }
 
-        // セーブ
         PlayerPrefs.Save();
 
         Debug.Log("ItemInventry セーブ完了");
@@ -185,34 +181,28 @@ public class GameData : MonoBehaviour
             SaveItemInventryDatas();
         }
 
-
-
-        ////*  ここまで  *////
-
         // デバッグ用　ロード
         if (Input.GetKeyDown(KeyCode.L) && isDebug)
         {
             LoadItemInventryDatas();
         }
 
-        // デバッグ用　ロード
-        if (Input.GetKeyDown(KeyCode.U) && isDebug)
+        // デバッグ用　アイテムの追加。所持している場合には加算
+        if (Input.GetKeyDown(KeyCode.I) && isDebug)
         {
+
             // 追加・加算したいアイテムの名前と数を引数に指定してメソッドを呼び出し
             AddItemInventryData(ItemName.ひのきの棒, 1);    // 引数を変更することで追加・加算するアイテムを指定する
         }
 
         // デバッグ用　所持しているアイテムの減算
-        if (Input.GetKeyDown(KeyCode.Y) && isDebug)
+        if (Input.GetKeyDown(KeyCode.O) && isDebug)
         {
 
             // 減算したいアイテムの名前と数を引数に指定してメソッドを呼び出し。除算後の所持数が 0 以下になった場合には削除
             RemoveItemInventryData(ItemName.ひのきの棒, 1);    // 引数を変更することで減算するアイテムを指定する
         }
-
     }
-
-
 
     /// <summary>
     /// ItemInvetryData を追加・加算
@@ -253,12 +243,15 @@ public class GameData : MonoBehaviour
     /// <param name="amount"></param>
     public void RemoveItemInventryData(ItemName itemName, int amount = 1)
     {
+
         // List の要素を１つずつ確認して、すでに所持しているアイテムか確認
         foreach (ItemInventryData itemInventryData in itemInventryDatasList)
         {
+
             // 所持しているアイテムの場合
             if (itemInventryData.itemName == itemName)
             {
+
                 // 所持数を減算
                 itemInventryData.count -= amount;
 
@@ -267,13 +260,68 @@ public class GameData : MonoBehaviour
                 // 所持数が 0 以下になったら
                 if (itemInventryData.count <= 0)
                 {
+
                     // 所持アイテムから削除
                     itemInventryDatasList.Remove(itemInventryData);
+
                     Debug.Log("リストから対象アイテムを削除 : " + itemName);
                 }
                 return;
             }
         }
+
         Debug.Log("リストに対象アイテムなし");
     }
+
+    /// <summary>
+    /// 獲得した探索イベントの番号を保持
+    /// </summary>
+    public void AddSearchEventNum(int searchEventNum)
+    {
+
+        // 引数の探索イベントの番号が List に登録されていない場合(このチェックで重複登録を防いでいる)
+        if (!getSearchEventNumsList.Contains(searchEventNum))
+        {
+
+            // 獲得した探索イベントの番号を追加
+            getSearchEventNumsList.Add(searchEventNum);
+        }
+    }
+
+
+    ////*  ここからメソッドを２つ追加  *////
+
+
+    /// <summary>
+    /// 獲得しているすべての探索イベントの番号をセーブ
+    /// </summary>
+    public void SaveAllGetSearchEventNums()
+    {
+        for (int i = 0; i < getSearchEventNumsList.Count; i++)
+        {
+            PlayerPrefs.SetInt(getSearchEventNumKey + getSearchEventNumsList[i].ToString(), getSearchEventNumsList[i]);
+        }
+
+        PlayerPrefs.Save();
+
+        Debug.Log("獲得済のすべての探索イベント セーブ完了");
+    }
+
+    /// <summary>
+    /// 獲得した探索イベントの番号をセーブ
+    /// </summary>
+    /// <param name="searchEventNum"></param>
+    public void SaveSearchEventNum(int searchEventNum)
+    {
+        PlayerPrefs.SetInt(getSearchEventNumKey + searchEventNum.ToString(), searchEventNum);
+
+        PlayerPrefs.Save();
+
+        Debug.Log("獲得済の探索イベントの番号 : " + searchEventNum + " : セーブ完了");
+    }
+
+
+    ////*  ここまで  *////
+
+
 }

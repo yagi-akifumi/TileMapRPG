@@ -27,11 +27,11 @@ public class TreasureBox : MonoBehaviour
     private PlayerController playerController;
 
 
-    void Start()
-    {
-        // 探索イベントの準備
-        SetUpTresureBox();
-    }
+    //void Start()
+    //{
+    // 探索イベントの準備
+    //SetUpTresureBox();
+    //}
 
     /// <summary>
     /// 探索イベントの準備

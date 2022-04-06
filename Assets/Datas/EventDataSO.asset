@@ -18,13 +18,33 @@ MonoBehaviour:
     title: Dog
     dialog: "\u308F\u3093\u308F\u3093\uFF01"
     eventSprite: {fileID: 0}
+    eventItemName: 0
+    eventItemCount: 0
   - eventType: 0
     no: 1
     title: Cat
     dialog: "\u306B\u3083\u30FC\uFF01"
     eventSprite: {fileID: 0}
+    eventItemName: 0
+    eventItemCount: 0
   - eventType: 0
     no: 2
     title: "\u6751\u4EBA"
     dialog: "\u3053\u3053\u306F\u6771\u304B\u304C\u308F\u306E\u8857\u3060\u3088"
     eventSprite: {fileID: 0}
+    eventItemName: 0
+    eventItemCount: 0
+  - eventType: 1
+    no: 1
+    title: "\u5B9D\u7BB1"
+    dialog: "\t"
+    eventSprite: {fileID: -4249539952858950829, guid: a967b6c6b3adc447b8e137a8d91b2760, type: 3}
+    eventItemName: 0
+    eventItemCount: 3
+  - eventType: 1
+    no: 1
+    title: "\u5B9D\u7BB1"
+    dialog: 
+    eventSprite: {fileID: 0}
+    eventItemName: 3
+    eventItemCount: 1

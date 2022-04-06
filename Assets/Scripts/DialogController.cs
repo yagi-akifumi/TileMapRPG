@@ -15,18 +15,20 @@ public class DialogController : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroup = null;
 
-　　[SerializeField]　　　　　　　　　　　　　
+    [SerializeField]
     private EventData eventData;
 
 
-    void Start() {
+    void Start()
+    {
         SetUpDialog();
     }
 
     /// <summary>
     /// ダイアログの設定
     /// </summary>
-    private void SetUpDialog() {
+    private void SetUpDialog()
+    {
         canvasGroup.alpha = 0.0f;
 
         // EventData を初期化
@@ -36,9 +38,11 @@ public class DialogController : MonoBehaviour
     /// <summary>
     /// ダイアログの表示
     /// </summary>
-    public void DisplayDialog(EventData eventData) {
+    public void DisplayDialog(EventData eventData)
+    {
 
-        if (this.eventData == null) {
+        if (this.eventData == null)
+        {
             this.eventData = eventData;
         }
 
@@ -55,17 +59,14 @@ public class DialogController : MonoBehaviour
     /// <summary>
     /// ダイアログの非表示
     /// </summary>
-    public void HideDialog() {
+    public void HideDialog()
+    {
         canvasGroup.DOFade(0.0f, 0.5f);
 
         txtDialog.text = "";
     }
 
-
-////*  ここから新しいメソッドを２つ追加  *////
-
-
-　　/// <summary>
+    /// <summary>
     /// 探索対象を獲得
     /// </summary>
     /// <param name="eventData"></param>
@@ -73,22 +74,31 @@ public class DialogController : MonoBehaviour
     /// <returns></returns>
     public void DisplaySearchDialog(EventData eventData, TreasureBox treasureBox)
     {
-　　　　// 会話ウインドウを表示
+
+        // 会話ウインドウを表示
         canvasGroup.DOFade(1.0f, 0.5f);
 
-　　　　// タイトルに探索物の名称を表示
+        // タイトルに探索物の名称を表示
         txtTitleName.text = eventData.title;
 
         // アイテム獲得
         GetEventItems(eventData);
 
-        // TODO 獲得した宝箱の番号を GameData に追加
+        // 獲得した宝箱の番号を GameData に追加
+        GameData.instance.AddSearchEventNum(treasureBox.treasureEventNo);
 
 
-        // TODO 獲得した宝箱の番号をセーブ
+        ////*  ここから処理を実装  *////
 
 
-        // TODO 所持しているアイテムのセーブ
+        // 獲得した宝箱の番号をセーブ
+        GameData.instance.SaveSearchEventNum(treasureBox.treasureEventNo);
+
+        // 所持しているアイテムのセーブ
+        GameData.instance.SaveItemInventryDatas();
+
+
+        ////*  ここまで  *////
 
 
         // TODO お金や経験値のセーブ
@@ -100,17 +110,13 @@ public class DialogController : MonoBehaviour
     /// アイテム獲得
     /// </summary>
     /// <param name="eventData"></param>
-    private void GetEventItems(EventData eventData) {
+    private void GetEventItems(EventData eventData)
+    {
 
         // 獲得したアイテムの名前と数を表示
-　　　　txtDialog.text = eventData.eventItemName.ToString() + " × " + eventData.eventItemCount + " 獲得";
+        txtDialog.text = eventData.eventItemName.ToString() + " × " + eventData.eventItemCount + " 獲得";
 
         // GameData にデータを登録　=　これがアイテム獲得の実処理
         GameData.instance.AddItemInventryData(eventData.eventItemName, eventData.eventItemCount);
     }
-
-
-////*  ここまで  *////
-
-
 }
