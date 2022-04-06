@@ -14,24 +14,52 @@ public class PlayerController : MonoBehaviour
     private float horizontal;                    // x 軸(水平・横)方向の入力の値の代入用
     private float vertical;                      // y 軸(垂直・縦)方向の入力の値の代入用
 
-    private Animator anim; // コンポーネントの取得用
+    private Animator anim;　　　　　　　　　　　 // コンポーネントの取得用
 
-    private Vector2 lookDirection = new Vector2(0, -1.0f);
-    // キャラの向きの情報の設定用
+    private Vector2 lookDirection = new Vector2(0, -1.0f);   // キャラの向きの情報の設定用
 
     private bool isTalking;                      // 会話イベント中かどうかの判定用。true の場合には会話イベント中
 
     private EncountManager encountManager;       // EncountManager クラスの情報を代入するための変数 
 
+
+    ////*  ここから変数の宣言を追加  *////
+
+
+    [SerializeField]
+    private OperationStatusWindow operationStatusWindow = null;                     // アイテムインベントリーウインドウの参照用
+
+    private string[] actionlayerMasks = new string[2] { "NPC", "TresureBox" };　　　// LayerMask の設定
+
+    public bool IsTalking　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 // isTalking のプロパティ
+    {
+        set
+        {
+            isTalking = value;
+        }
+
+        get
+        {
+            return isTalking;
+        }
+    }
+
+
+    ////*  ここまで  *////
+
+
     void Start()
     {
+
         // このスクリプトがアタッチされているゲームオブジェクトにアタッチされているコンポーネントの中から、<指定>したコンポーネントの情報を取得して、左辺に用意した変数に代入
         rb = GetComponent<Rigidbody2D>();
+
         anim = GetComponent<Animator>();
 
         // エンカウント後の場合　=>　初めてゲームを実行した場合には実行されない
         if (GameData.instance.isEncouting)
         {
+
             // Transform で記録すると、前のシーンの PlayerController を参照しているため、シーン遷移時に PlayerController がなくてエラーで落ちる
             // Vector3 型ならば問題なし。これで、前の位置に戻れる
             transform.position = GameData.instance.GetCurrentPlayerPos();
@@ -46,10 +74,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
+
+
+        ////*  ここから処理を追加  *////
+
+
+        // ステータス画面表示中は操作できない
+        //if (operationStatusWindow.propertyWindow.activeSelf)
+        //{
+        //return;
+        //}
+
+
+        ////*  ここまで  *////
+
+
         // アクション
         Action();
 
@@ -58,7 +99,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
 
         // InputManager の Horizontal に登録してあるキーが入力されたら、水平(横)方向の入力値として代入
         horizontal = Input.GetAxis("Horizontal");
@@ -72,6 +112,21 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+
+
+        ////*  ここから処理を追加  *////
+
+
+        // ステータス画面表示中は操作できない
+        //if (operationStatusWindow.propertyWindow.activeSelf)
+        //{
+        //rb.velocity = Vector2.zero;
+        //return;
+        //}
+
+
+        ////*  ここまで  *////
+
 
         // 移動
         Move();
@@ -95,8 +150,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     /// <summary>
     /// キャラの向いている方向と移動アニメの同期
     /// </summary>
@@ -115,11 +168,11 @@ public class PlayerController : MonoBehaviour
 
             // 正規化
             lookDirection.Normalize();
-
-            // キー入力の値と Blend Tree で設定した移動アニメ用の値を確認し、移動アニメを再生
-            anim.SetFloat("Look X", lookDirection.x);
-            anim.SetFloat("Look Y", lookDirection.y);
         }
+
+        // キー入力の値と Blend Tree で設定した移動アニメ用の値を確認し、移動アニメを再生
+        anim.SetFloat("Look X", lookDirection.x);
+        anim.SetFloat("Look Y", lookDirection.y);
 
         // 停止アニメーション用
         anim.SetFloat("Speed", move.magnitude);
@@ -134,8 +187,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Action"))
         {
 
-            // Player の位置を起点とし、Player の向いている方向に 1.0f 分だけ Ray を発射し、NPC レイヤーを持つゲームオブジェクトに接触するか判定し、その情報を hit 変数に代入
-            RaycastHit2D hit = Physics2D.Raycast(rb.position, lookDirection, 1.0f, LayerMask.GetMask("NPC"));
+            ////*  ここから処理を変更  *////
+
+
+            RaycastHit2D hit = Physics2D.Raycast(rb.position, lookDirection, 1.0f, LayerMask.GetMask(actionlayerMasks));    //　<=　複数の Layer を判定するために、GetMask メソッドの引数を変更します
+
+
+            ////*  ここまで  *////
+
 
             // Scene ビューにて Ray の可視化
             Debug.DrawRay(rb.position, lookDirection, Color.blue, 1.0f);
@@ -170,6 +229,29 @@ public class PlayerController : MonoBehaviour
                         isTalking = false;
                     }
                 }
+
+
+                ////*  ここから処理を追加  *////
+
+
+                else if (hit.collider.TryGetComponent(out TreasureBox treasureBox))
+                {
+                    if (!treasureBox.isOpen)
+                    {
+                        treasureBox.OpenTresureBox(transform.position, this);
+                        isTalking = true;
+                    }
+                    else
+                    {
+                        treasureBox.CloseTreasureBox();
+                        isTalking = false;
+                    }
+                }
+
+
+                ////*  ここまで  *////
+
+
             }
         }
     }
@@ -180,17 +262,8 @@ public class PlayerController : MonoBehaviour
     /// <param name="encountManager"></param>
     public void SetUpPlayerController(EncountManager encountManager)
     {
-
-        // メソッドを通じて、外部のクラスの情報を取得して変数に代入
         this.encountManager = encountManager;
-
-
-
-
-
     }
-    ////*  ここからメソッドを１つ追加  *////
-
 
     /// <summary>
     /// 向いている方向を戻す
@@ -202,11 +275,4 @@ public class PlayerController : MonoBehaviour
         // 現在のキャラの向いている方向の情報を渡す
         return lookDirection;
     }
-
-
-    ////*  ここまで  *////
-
-
 }
-
-
