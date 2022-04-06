@@ -29,7 +29,6 @@ public class TreasureBox : MonoBehaviour
 
     void Start()
     {
-
         // 探索イベントの準備
         SetUpTresureBox();
     }
@@ -75,7 +74,19 @@ public class TreasureBox : MonoBehaviour
             dialogController.transform.position = defaultPos;
         }
 
-        Debug.Log("探索イベント用の会話ウインドウを開く");
+
+        ////*  ここから処理を修正  *////
+
+
+        //Debug.Log("探索イベント用の会話ウインドウを開く");　　<=　コメントアウトし、処理を記述します
+
+        // 探索イベント用の会話ウインドウを開く
+        dialogController.DisplaySearchDialog(eventData, this);
+
+
+        ////*  ここまで  *////
+
+
     }
 
     /// <summary>
@@ -86,6 +97,18 @@ public class TreasureBox : MonoBehaviour
 
         playerController.IsTalking = false;
 
-        Debug.Log("探索イベント用の会話ウインドウを閉じる");
+
+        ////*  ここから処理を修正  *////
+
+
+        //Debug.Log("探索イベント用の会話ウインドウを閉じる");　　<=　コメントアウトし、処理を記述します
+
+        // 探索イベント用の会話ウインドウを閉じる
+        dialogController.HideDialog();
+
+
+        ////*  ここまで  *////
+
+
     }
 }

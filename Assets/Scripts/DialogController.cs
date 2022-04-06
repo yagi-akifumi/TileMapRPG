@@ -15,86 +15,102 @@ public class DialogController : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroup = null;
 
-
-    ////*  ここから修正・追加  *////
-
-
-    //[SerializeField]
-    //private string titleName = "dog";　　　　　//　<=　EventData から情報を受け取りますので不要になります
-
-    //[SerializeField]
-    //private string dialog = "ワンワン!";　　 　//　<=　EventData から情報を受け取りますので不要になります
-
-    [SerializeField]　　　　　　　　　　　　　　 //　<=　代入されたか確認できるようにインスペクターに表示する。確認が終了したら、SerializeField属性 は削除してもよいです
-    private EventData eventData;             //　<=  NonPlayerCharacter スクリプトから EventData の情報がメソッドの引数を通じて届きますので、それを代入するための変数
+　　[SerializeField]　　　　　　　　　　　　　
+    private EventData eventData;
 
 
-    ////*  ここまで  *////
-
-
-    void Start()
-    {
+    void Start() {
         SetUpDialog();
     }
 
     /// <summary>
     /// ダイアログの設定
     /// </summary>
-    private void SetUpDialog()
-    {
+    private void SetUpDialog() {
         canvasGroup.alpha = 0.0f;
-
-
-        ////*  ここから修正  *////
-
-
-        //txtTitleName.text = titleName;　　　//　<=　情報を受け取ってから表示する内容を設定しますので、ここはコメントアウトしてください。
 
         // EventData を初期化
         eventData = null;
-
-
-        ////*  ここまで  *////
-
-
     }
-
-
-    ////*  ①～④の処理を修正・追加  *////
-
 
     /// <summary>
     /// ダイアログの表示
     /// </summary>
-    public void DisplayDialog(EventData eventData)
-    {　　　//　①　引数を追加します
+    public void DisplayDialog(EventData eventData) {
 
-        if (this.eventData == null)
-        {　　　　　　　　   　//　② if 文による制御を追加します
+        if (this.eventData == null) {
             this.eventData = eventData;
         }
 
-        canvasGroup.DOFade(1.0f, 0.5f);　　　　　　   　　//　そのまま
+        canvasGroup.DOFade(1.0f, 0.5f);
 
-        txtTitleName.text = this.eventData.title;　  　 　//　③ Title として表示するタイトル(NPC の名前)の内容を EventData の内容に変更します
+        txtTitleName.text = this.eventData.title;
 
-        txtDialog.DOText(this.eventData.dialog, 1.0f).SetEase(Ease.Linear);  //　④  Dialog として表示するメッセージの内容を EventData の内容に変更します
+        txtDialog.DOText(this.eventData.dialog, 1.0f).SetEase(Ease.Linear);
 
         // TODO 画像データがある場合には、Image 型の変数を用意して eventData.eventSprite を代入する
-
-
-        ////*  ここまで  *////
-
 
     }
 
     /// <summary>
     /// ダイアログの非表示
     /// </summary>
-    public void HideDialog()
-    {
+    public void HideDialog() {
         canvasGroup.DOFade(0.0f, 0.5f);
 
         txtDialog.text = "";
     }
+
+
+////*  ここから新しいメソッドを２つ追加  *////
+
+
+　　/// <summary>
+    /// 探索対象を獲得
+    /// </summary>
+    /// <param name="eventData"></param>
+    /// <param name="treasureBox"></param>
+    /// <returns></returns>
+    public void DisplaySearchDialog(EventData eventData, TreasureBox treasureBox)
+    {
+　　　　// 会話ウインドウを表示
+        canvasGroup.DOFade(1.0f, 0.5f);
+
+　　　　// タイトルに探索物の名称を表示
+        txtTitleName.text = eventData.title;
+
+        // アイテム獲得
+        GetEventItems(eventData);
+
+        // TODO 獲得した宝箱の番号を GameData に追加
+
+
+        // TODO 獲得した宝箱の番号をセーブ
+
+
+        // TODO 所持しているアイテムのセーブ
+
+
+        // TODO お金や経験値のセーブ
+
+    }
+
+
+    /// <summary>
+    /// アイテム獲得
+    /// </summary>
+    /// <param name="eventData"></param>
+    private void GetEventItems(EventData eventData) {
+
+        // 獲得したアイテムの名前と数を表示
+　　　　txtDialog.text = eventData.eventItemName.ToString() + " × " + eventData.eventItemCount + " 獲得";
+
+        // GameData にデータを登録　=　これがアイテム獲得の実処理
+        GameData.instance.AddItemInventryData(eventData.eventItemName, eventData.eventItemCount);
+    }
+
+
+////*  ここまで  *////
+
+
 }
