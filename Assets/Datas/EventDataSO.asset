@@ -35,7 +35,7 @@ MonoBehaviour:
     eventItemName: 0
     eventItemCount: 0
   - eventType: 1
-    no: 1
+    no: 0
     title: "\u5B9D\u7BB1"
     dialog: "\t"
     eventSprite: {fileID: -4249539952858950829, guid: a967b6c6b3adc447b8e137a8d91b2760, type: 3}

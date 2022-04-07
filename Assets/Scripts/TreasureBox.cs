@@ -27,11 +27,16 @@ public class TreasureBox : MonoBehaviour
     private PlayerController playerController;
 
 
-    //void Start()
-    //{
-    // 探索イベントの準備
-    //SetUpTresureBox();
+    ////*  ここから処理を修正  *////
+
+
+    //void Start() {
+    //    SetUpTresureBox();　　　//　<=　外部のクラスより呼び出すように変更するので、Start メソッドでは実行しないようにする
     //}
+
+
+    ////*  ここまで  *////
+
 
     /// <summary>
     /// 探索イベントの準備
@@ -63,7 +68,17 @@ public class TreasureBox : MonoBehaviour
             this.playerController = playerController;
         }
 
-        isOpen = true;
+
+        ////*  ここから処理を修正  *////
+
+
+        //isOpen = true;　　　　　　　//　<=　削除します
+
+        SwitchStateTresureBox(true);
+
+
+        ////*  ここまで  *////
+
 
         if (playerPos.y < transform.position.y)
         {
@@ -74,19 +89,8 @@ public class TreasureBox : MonoBehaviour
             dialogController.transform.position = defaultPos;
         }
 
-
-        ////*  ここから処理を修正  *////
-
-
-        //Debug.Log("探索イベント用の会話ウインドウを開く");　　<=　コメントアウトし、処理を記述します
-
         // 探索イベント用の会話ウインドウを開く
         dialogController.DisplaySearchDialog(eventData, this);
-
-
-        ////*  ここまで  *////
-
-
     }
 
     /// <summary>
@@ -97,18 +101,44 @@ public class TreasureBox : MonoBehaviour
 
         playerController.IsTalking = false;
 
-
-        ////*  ここから処理を修正  *////
-
-
-        //Debug.Log("探索イベント用の会話ウインドウを閉じる");　　<=　コメントアウトし、処理を記述します
-
         // 探索イベント用の会話ウインドウを閉じる
         dialogController.HideDialog();
-
-
-        ////*  ここまで  *////
-
-
     }
+
+
+    ////*  ここからメソッドを２つ追加  *////
+
+
+    /// <summary>
+    /// 探索イベントの通し番号の取得
+    /// </summary>
+    /// <returns></returns>
+    public int GetTresureEventNum()
+    {
+        return treasureEventNo;
+    }
+
+    /// <summary>
+    /// 探索状態の切り替え(①か②は、いずれかを実装する)
+    /// </summary>
+    /// <param name="isSwitch"></param>
+    public void SwitchStateTresureBox(bool isSwitch)
+    {
+        isOpen = isSwitch;
+
+        if (isOpen)
+        {
+
+            // ① 宝箱の画像を開封済にする場合
+            spriteRenderer.sprite = eventData.eventSprite;
+
+            // ② 宝箱自体を非表示にする場合
+            this.gameObject.SetActive(false);
+        }
+    }
+
+
+    ////*  ここまで  *////
+
+
 }

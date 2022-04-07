@@ -46,14 +46,7 @@ public class GameData : MonoBehaviour
     [Header("獲得済の探索イベントの番号")]
     public List<int> getSearchEventNumsList = new List<int>();
 
-
-    ////*  ここから処理を追加  *////
-
-
     private const string getSearchEventNumKey = "getSearchEventNumkey_";
-
-
-    ////*  ここまで  *////
 
 
     void Awake()
@@ -288,10 +281,6 @@ public class GameData : MonoBehaviour
         }
     }
 
-
-    ////*  ここからメソッドを２つ追加  *////
-
-
     /// <summary>
     /// 獲得しているすべての探索イベントの番号をセーブ
     /// </summary>
@@ -318,6 +307,25 @@ public class GameData : MonoBehaviour
         PlayerPrefs.Save();
 
         Debug.Log("獲得済の探索イベントの番号 : " + searchEventNum + " : セーブ完了");
+    }
+
+
+    ////*  ここからメソッドを１つ追加  *////
+
+
+    /// <summary>
+    /// 獲得している探索イベントの番号をロード
+    /// </summary>
+    public void LoadGetSearchEventNums()
+    {
+        for (int i = 0; i < DataBaseManager.instance.GetEventDataSOCount(); i++)
+        {
+            int value = PlayerPrefs.GetInt(getSearchEventNumKey + i.ToString(), -1);
+            if (value != -1)
+            {
+                getSearchEventNumsList.Add(value);
+            }
+        }
     }
 
 

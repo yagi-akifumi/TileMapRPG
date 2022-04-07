@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
 
         ////*  ここから処理を追加  *////
 
+        // TODO ここがうまくいかない
 
         // ステータス画面表示中は操作できない
         //if (operationStatusWindow.propertyWindow.activeSelf)
@@ -116,6 +117,7 @@ public class PlayerController : MonoBehaviour
 
         ////*  ここから処理を追加  *////
 
+        // TODO TileMapRPGの18と19の実装が完了したら動かす。
 
         // ステータス画面表示中は操作できない
         //if (operationStatusWindow.propertyWindow.activeSelf)
@@ -189,7 +191,7 @@ public class PlayerController : MonoBehaviour
 
             ////*  ここから処理を変更  *////
 
-
+            // actionlayerMasks 変数に代入されている複数の文字列の Layer を判定対象とする　<=　NPC レイヤーのゲームオブジェクトだけではなく、TreasureBox レイヤーのゲームオブジェクトにも反応する
             RaycastHit2D hit = Physics2D.Raycast(rb.position, lookDirection, 1.0f, LayerMask.GetMask(actionlayerMasks));    //　<=　複数の Layer を判定するために、GetMask メソッドの引数を変更します
 
 

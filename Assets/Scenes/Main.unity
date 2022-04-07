@@ -2837,7 +2837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f98cd3277d92b4c01871ae9f6aa51c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomEncountRate: 300
+  randomEncountRate: 3
   isEncouting: 0
   isDebug: 1
   itemInventryDatasList: []
@@ -4937,14 +4937,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventDataSO: {fileID: 11400000, guid: d0526a991b9d045d5b4525155954302f, type: 2}
   itemDataSO: {fileID: 11400000, guid: db398150400b84fc9bf68d2f90ab2191, type: 2}
-  equipItemDatasList: []
-  saleItemDatasList: []
-  valuablesItemDatasList: []
-  useItemDatasList: []
-  equipItemNamesList: []
-  saleItemNamesList: []
-  valuablesItemNamesList: []
-  useItemNamesList: []
 --- !u!4 &1511835748
 Transform:
   m_ObjectHideFlags: 0
