@@ -18,7 +18,7 @@ public class EventData
     public string title;//タイトル。NPCの名前、探す対象物の名前など
 
     [Multiline]
-    public string dialog;// NPC のメッセージ、対象物のメッセージ、など
+    public string[] dialogs;// NPC のメッセージ、対象物のメッセージ、など
     public Sprite eventSprite;// イベントの画像データ
 
     public ItemName eventItemName; // イベントで獲得できるアイテム

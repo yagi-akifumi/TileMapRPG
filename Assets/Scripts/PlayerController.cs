@@ -22,10 +22,6 @@ public class PlayerController : MonoBehaviour
 
     private EncountManager encountManager;       // EncountManager クラスの情報を代入するための変数 
 
-
-    ////*  ここから変数の宣言を追加  *////
-
-
     [SerializeField]
     private OperationStatusWindow operationStatusWindow = null;                     // アイテムインベントリーウインドウの参照用
 
@@ -33,19 +29,9 @@ public class PlayerController : MonoBehaviour
 
     public bool IsTalking　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 // isTalking のプロパティ
     {
-        set
-        {
-            isTalking = value;
-        }
-
-        get
-        {
-            return isTalking;
-        }
+        set { isTalking = value; }
+        get { return isTalking; }
     }
-
-
-    ////*  ここまで  *////
 
 
     void Start()
@@ -77,20 +63,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-
-        ////*  ここから処理を追加  *////
-
-        // TODO ここがうまくいかない
-
         // ステータス画面表示中は操作できない
         //if (operationStatusWindow.propertyWindow.activeSelf)
         //{
+        //rb.velocity = Vector2.zero;
         //return;
         //}
-
-
-        ////*  ここまで  *////
-
 
         // アクション
         Action();
@@ -114,21 +92,12 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
-
-        ////*  ここから処理を追加  *////
-
-        // TODO TileMapRPGの18と19の実装が完了したら動かす。
-
         // ステータス画面表示中は操作できない
         //if (operationStatusWindow.propertyWindow.activeSelf)
         //{
         //rb.velocity = Vector2.zero;
         //return;
         //}
-
-
-        ////*  ここまで  *////
-
 
         // 移動
         Move();
@@ -186,17 +155,22 @@ public class PlayerController : MonoBehaviour
     private void Action()
     {
 
+
+        ////*  ここから処理を追加  *////
+
+
+        if (isTalking)
+        {
+            return;
+        }
+
+
+        ////*  ここまで  *////
+
+
         if (Input.GetButtonDown("Action"))
         {
-
-            ////*  ここから処理を変更  *////
-
-            // actionlayerMasks 変数に代入されている複数の文字列の Layer を判定対象とする　<=　NPC レイヤーのゲームオブジェクトだけではなく、TreasureBox レイヤーのゲームオブジェクトにも反応する
-            RaycastHit2D hit = Physics2D.Raycast(rb.position, lookDirection, 1.0f, LayerMask.GetMask(actionlayerMasks));    //　<=　複数の Layer を判定するために、GetMask メソッドの引数を変更します
-
-
-            ////*  ここまで  *////
-
+            RaycastHit2D hit = Physics2D.Raycast(rb.position, lookDirection, 1.0f, LayerMask.GetMask(actionlayerMasks));
 
             // Scene ビューにて Ray の可視化
             Debug.DrawRay(rb.position, lookDirection, Color.blue, 1.0f);
@@ -213,8 +187,16 @@ public class PlayerController : MonoBehaviour
                     if (!npc.isTalking)
                     {
 
+
+                        ////*  ここから処理を修正  *////
+
+
                         // NPC との会話イベントを発生させる
-                        npc.PlayTalk(transform.position);
+                        npc.PlayTalk(transform.position, this);   //　<=　第2引数を追加します
+
+
+                        ////*  ここから処理を追加  *////
+
 
                         // Player を会話イベント中の状態にする
                         isTalking = true;
@@ -231,11 +213,6 @@ public class PlayerController : MonoBehaviour
                         isTalking = false;
                     }
                 }
-
-
-                ////*  ここから処理を追加  *////
-
-
                 else if (hit.collider.TryGetComponent(out TreasureBox treasureBox))
                 {
                     if (!treasureBox.isOpen)
@@ -249,11 +226,6 @@ public class PlayerController : MonoBehaviour
                         isTalking = false;
                     }
                 }
-
-
-                ////*  ここまで  *////
-
-
             }
         }
     }
