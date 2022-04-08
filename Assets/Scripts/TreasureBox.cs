@@ -27,17 +27,6 @@ public class TreasureBox : MonoBehaviour
     private PlayerController playerController;
 
 
-    ////*  ここから処理を修正  *////
-
-
-    //void Start() {
-    //    SetUpTresureBox();　　　//　<=　外部のクラスより呼び出すように変更するので、Start メソッドでは実行しないようにする
-    //}
-
-
-    ////*  ここまで  *////
-
-
     /// <summary>
     /// 探索イベントの準備
     /// </summary>
@@ -68,17 +57,7 @@ public class TreasureBox : MonoBehaviour
             this.playerController = playerController;
         }
 
-
-        ////*  ここから処理を修正  *////
-
-
-        //isOpen = true;　　　　　　　//　<=　削除します
-
         SwitchStateTresureBox(true);
-
-
-        ////*  ここまで  *////
-
 
         if (playerPos.y < transform.position.y)
         {
@@ -89,8 +68,19 @@ public class TreasureBox : MonoBehaviour
             dialogController.transform.position = defaultPos;
         }
 
+
+        ////*  ここから処理を修正  *////
+
+
         // 探索イベント用の会話ウインドウを開く
-        dialogController.DisplaySearchDialog(eventData, this);
+        //dialogController.DisplaySearchDialog(eventData, this);　　　//　<=　下記に変更します
+
+        StartCoroutine(dialogController.DisplaySearchDialog(eventData, this));
+
+
+        ////*  ここまで  *////
+
+
     }
 
     /// <summary>
@@ -104,10 +94,6 @@ public class TreasureBox : MonoBehaviour
         // 探索イベント用の会話ウインドウを閉じる
         dialogController.HideDialog();
     }
-
-
-    ////*  ここからメソッドを２つ追加  *////
-
 
     /// <summary>
     /// 探索イベントの通し番号の取得
@@ -129,16 +115,20 @@ public class TreasureBox : MonoBehaviour
         if (isOpen)
         {
 
+
+            ////*  ここから処理を修正  *////
+
+
             // ① 宝箱の画像を開封済にする場合
-            spriteRenderer.sprite = eventData.eventSprite;
+            spriteRenderer.sprite = eventData.eventDataDetailsList[0].eventSprite; //<= ☆①　右辺の参照する変数を変更します
 
             // ② 宝箱自体を非表示にする場合
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);   　//　<=　☆②　コルーチンを呼び出す処理を OpenTresureBox メソッド内に実装したため、こちらの処理は利用しないようにしてください。
+
+
+            ////*  ここから処理を修正  *////
+
+
         }
     }
-
-
-    ////*  ここまで  *////
-
-
 }

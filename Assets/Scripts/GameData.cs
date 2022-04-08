@@ -42,11 +42,38 @@ public class GameData : MonoBehaviour
 
     [Header("所持アイテムのリスト")]
     public List<ItemInventryData> itemInventryDatasList = new List<ItemInventryData>();
+    [Header("会話ウインドウの種類を設定")]
+    public TalkWindowType useTalkWindowType;
 
     [Header("獲得済の探索イベントの番号")]
     public List<int> getSearchEventNumsList = new List<int>();
 
     private const string getSearchEventNumKey = "getSearchEventNumkey_";
+
+    /// <summary>
+    /// 会話ウインドウの種類
+    /// </summary>
+    public enum TalkWindowType
+    {
+        Fixed,   // 固定型
+        Movable  // 稼働型
+    }
+
+  
+
+
+    ////*  ここから変数を追加  *////
+
+
+    [Header("クリア済の会話イベントの番号")]
+    public List<int> clearTalkEventNumsList = new List<int>();
+
+    private const string clearTalkEventNumKey = "getTalkEventNumKey_";
+
+    public int money;   // お金
+
+
+    ////*  ここまで  *////
 
 
     void Awake()
@@ -195,6 +222,20 @@ public class GameData : MonoBehaviour
             // 減算したいアイテムの名前と数を引数に指定してメソッドを呼び出し。除算後の所持数が 0 以下になった場合には削除
             RemoveItemInventryData(ItemName.ひのきの棒, 1);    // 引数を変更することで減算するアイテムを指定する
         }
+
+
+        ////*  ここから処理を追加  *////
+
+
+        if (Input.GetKeyDown(KeyCode.P) && isDebug)
+        {
+            LoadClearTalkEventNums();
+        }
+
+
+        ////*  ここまで  *////
+
+
     }
 
     /// <summary>
@@ -309,10 +350,6 @@ public class GameData : MonoBehaviour
         Debug.Log("獲得済の探索イベントの番号 : " + searchEventNum + " : セーブ完了");
     }
 
-
-    ////*  ここからメソッドを１つ追加  *////
-
-
     /// <summary>
     /// 獲得している探索イベントの番号をロード
     /// </summary>
@@ -326,6 +363,86 @@ public class GameData : MonoBehaviour
                 getSearchEventNumsList.Add(value);
             }
         }
+    }
+
+
+    ////*  ここから新しいメソッドを６つ追加  *////
+
+
+    /// <summary>
+    /// 会話イベントに必要なアイテムを所持しているか確認
+    /// </summary>
+    /// <param name="checkItemName"></param>
+    /// <param name="checkCount"></param>
+    /// <returns></returns>
+    public bool CheckTalkEventItemFromItemInvenry(ItemName checkItemName, int checkCount)
+    {
+        // アイテム名で判定
+        var itemInventry = itemInventryDatasList.Find(x => x.itemName == checkItemName);
+
+        // お金の場合
+        if (checkItemName == ItemName.お金)
+        {
+            // 必要な値を超えているか判定。必要な値を超えている場合は true
+            return money >= checkCount ? true : false;
+        }
+
+        // インベントリーが null ではなく、必要な数を超えている場合は true
+        return itemInventry == null ? false : itemInventry.count >= checkCount ? true : false;
+    }
+
+    /// <summary>
+    /// クリアした会話イベントを List に追加
+    /// </summary>
+    /// <param name="talkEventNum"></param>
+    public void AddClearTalkEventNum(int talkEventNum)
+    {
+        clearTalkEventNumsList.Add(talkEventNum);
+    }
+
+    /// <summary>
+    /// クリア済の会話イベントの確認
+    /// </summary>
+    /// <param name="talkEventNum"></param>
+    /// <returns></returns>
+    public bool CheckClearTalkEventNum(int talkEventNum)
+    {
+        return clearTalkEventNumsList.Contains(talkEventNum);
+    }
+
+    /// <summary>
+    /// クリアした会話イベントの番号をセーブ
+    /// </summary>
+    /// <param name="talkEventNum"></param>
+    public void SaveClearTalkEventNum(int talkEventNum)
+    {
+        PlayerPrefs.SetInt(clearTalkEventNumKey + talkEventNum.ToString(), talkEventNum);
+    }
+
+    /// <summary>
+    /// クリアしている会話イベントの番号のロード
+    /// </summary>
+    public void LoadClearTalkEventNums()
+    {
+        for (int i = 0; i < DataBaseManager.instance.GetEventDataSOCount(); i++)
+        {
+            int value = PlayerPrefs.GetInt(clearTalkEventNumKey + i.ToString(), -1);
+            if (value != -1)
+            {
+                clearTalkEventNumsList.Add(value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// お金を計算
+    /// </summary>
+    /// <param name="amount"></param>
+    public void CalculateMoney(int amount)
+    {
+        money += amount;
+
+        // TODO お金のセーブメソッド作成
     }
 
 

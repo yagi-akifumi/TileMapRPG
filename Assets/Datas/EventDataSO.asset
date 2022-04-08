@@ -16,35 +16,27 @@ MonoBehaviour:
   - eventType: 0
     no: 0
     title: Dog
-    dialog: "\u308F\u3093\u308F\u3093\uFF01"
+    dialogs:
+    - wannwann
     eventSprite: {fileID: 0}
     eventItemName: 0
     eventItemCount: 0
   - eventType: 0
     no: 1
     title: Cat
-    dialog: "\u306B\u3083\u30FC\uFF01"
+    dialogs:
+    - "\u660E\u65E5\u306F\u8EE2\u6A5F\u306B\u306A\u308B\u3088\u3002\u4ECA\u65E5\u306F\u3044\u3044\u8EE2\u6A5F\u3060\u306A\u30FC\u3002\n\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3\u660E\u65E5\u306F\u8EE2\u6A5F\u306B\u306A\u308B\u3088\u3002\u4ECA\u65E5\u306F\u3044\u3044\u8EE2\u6A5F\u3060\u306A\u30FC\u3002\n\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3"
+    - "\u660E\u65E5\u306F\u8EE2\u6A5F\u306B\u306A\u308B\u3088\u3002"
     eventSprite: {fileID: 0}
     eventItemName: 0
     eventItemCount: 0
   - eventType: 0
     no: 2
     title: "\u6751\u4EBA"
-    dialog: "\u3053\u3053\u306F\u6771\u304B\u304C\u308F\u306E\u8857\u3060\u3088"
+    dialogs:
+    - "\u660E\u65E5\u306F\u8EE2\u6A5F\u306B\u306A\u308B\u3088\u3002"
+    - "\u660E\u65E5\u306F\u8EE2\u6A5F\u306B\u306A\u308B\u3088\u3002\u4ECA\u65E5\u306F\u3044\u3044\u8EE2\u6A5F\u3060\u306A\u30FC\u3002\n\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3\u30AF\u30FC\u30F3"
+    - 
     eventSprite: {fileID: 0}
     eventItemName: 0
     eventItemCount: 0
-  - eventType: 1
-    no: 0
-    title: "\u5B9D\u7BB1"
-    dialog: "\t"
-    eventSprite: {fileID: -4249539952858950829, guid: a967b6c6b3adc447b8e137a8d91b2760, type: 3}
-    eventItemName: 0
-    eventItemCount: 3
-  - eventType: 1
-    no: 1
-    title: "\u5B9D\u7BB1"
-    dialog: 
-    eventSprite: {fileID: -4249539952858950829, guid: a967b6c6b3adc447b8e137a8d91b2760, type: 3}
-    eventItemName: 3
-    eventItemCount: 1

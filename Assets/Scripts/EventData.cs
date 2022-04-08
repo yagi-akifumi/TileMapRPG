@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -17,12 +18,19 @@ public class EventData
     public int no; //通し番号
     public string title;//タイトル。NPCの名前、探す対象物の名前など
 
-    [Multiline]
-    public string[] dialogs;// NPC のメッセージ、対象物のメッセージ、など
-    public Sprite eventSprite;// イベントの画像データ
+    [System.Serializable]
+    public class EventDataDetail
+    {
+        public EventProgressType eventProgressType;
 
-    public ItemName eventItemName; // イベントで獲得できるアイテム
-    public int eventItemCount;     // イベントで獲得できる個数
+        [Multiline]
+        public string[] dialogs;// NPC のメッセージ、対象物のメッセージ、など
+        public Sprite eventSprite;// イベントの画像データ
 
+        public ItemName eventItemName; // イベントで獲得できるアイテム
+        public int eventItemCount;     // イベントで獲得できる個数
+    }
+
+    public List<EventDataDetail> eventDataDetailsList = new List<EventDataDetail>();
     // TODO そのほかに追加する場合には以下に補記する
 }
