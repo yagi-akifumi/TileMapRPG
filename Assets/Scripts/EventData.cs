@@ -29,6 +29,7 @@ public class EventData
 
         public ItemName eventItemName; // イベントで獲得できるアイテム
         public int eventItemCount;     // イベントで獲得できる個数
+        internal object eventItemCounts;
     }
 
     public List<EventDataDetail> eventDataDetailsList = new List<EventDataDetail>();

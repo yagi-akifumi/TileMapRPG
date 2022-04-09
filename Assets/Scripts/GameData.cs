@@ -42,6 +42,7 @@ public class GameData : MonoBehaviour
 
     [Header("所持アイテムのリスト")]
     public List<ItemInventryData> itemInventryDatasList = new List<ItemInventryData>();
+
     [Header("会話ウインドウの種類を設定")]
     public TalkWindowType useTalkWindowType;
 
@@ -58,9 +59,6 @@ public class GameData : MonoBehaviour
         Fixed,   // 固定型
         Movable  // 稼働型
     }
-
-  
-
 
     ////*  ここから変数を追加  *////
 

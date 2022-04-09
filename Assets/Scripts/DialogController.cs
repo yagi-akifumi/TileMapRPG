@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class DialogController : MonoBehaviour
 {
@@ -307,7 +308,7 @@ public class DialogController : MonoBehaviour
     /// アイテム獲得
     /// </summary>
     /// <param name="eventDataDetail"></param>
-    private IEnumerator GetEventItems(ventData.EventDataDetail eventDataDetail)
+    private IEnumerator GetEventItems(eventData.EventDataDetail eventDataDetail)
     {    //　<=　戻り値と引数を変更します。
 
         // 獲得したアイテムの名前と数を表示
