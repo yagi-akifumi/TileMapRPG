@@ -7,16 +7,19 @@ public class EventData
     /// <summary>
     /// イベントの種類
     /// </summary>
-
     public enum EventType
     {
         Talk,
         Search,
     }
 
-    public EventType eventType; //イベントの種類
-    public int no; //通し番号
-    public string title;//タイトル。NPCの名前、探す対象物の名前など
+    public EventType eventType;    // イベントの種類
+    public int no;                 // 通し番号
+    public string title;           // タイトル。NPC の名前、探す対象物の名前、など
+
+
+    ////*  ここから新しいクラスと、そのクラスを管理する List を追加  *////
+
 
     [System.Serializable]
     public class EventDataDetail
@@ -24,14 +27,19 @@ public class EventData
         public EventProgressType eventProgressType;
 
         [Multiline]
-        public string[] dialogs;// NPC のメッセージ、対象物のメッセージ、など
-        public Sprite eventSprite;// イベントの画像データ
+        public string[] dialogs;       　　　  // NPC のメッセージ、対象物のメッセージ、など
+        public Sprite eventSprite;     　　　　// イベントの画像データ
 
-        public ItemName eventItemName; // イベントで獲得できるアイテム
-        public int eventItemCount;     // イベントで獲得できる個数
-        internal object eventItemCounts;
+        public ItemName[] eventItemNames;      // イベントに必要なアイテム、あるいは獲得できるアイテム。配列にします
+        public int[] eventItemCounts;          // イベントに必要な個数、あるいは入手できる個数。配列にします
     }
 
     public List<EventDataDetail> eventDataDetailsList = new List<EventDataDetail>();
+
+
+    ////*  ここまで  *////
+
+
     // TODO そのほかに追加する場合には以下に補記する
+
 }
